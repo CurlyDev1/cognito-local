@@ -251,14 +251,16 @@ export class JwtTokenGenerator implements TokenGenerator {
   ): Promise<Tokens> {
     const eventId = uuid.v4();
     const authTime = Math.floor(this.clock.get().getTime() / 1000);
-
+    const scopes = ["aws.cognito.signin.user.admin"].concat(
+      userPoolClient.AllowedOAuthScopes || []
+    );
     const accessToken: RawToken = {
       auth_time: authTime,
       client_id: userPoolClient.ClientId,
       event_id: eventId,
       iat: authTime,
       jti: uuid.v4(),
-      scope: "aws.cognito.signin.user.admin", // TODO: scopes
+      scope: scopes.join(" "), // TODO: scopes
       sub: userPoolClient.ClientId,
       token_use: "access",
     };
