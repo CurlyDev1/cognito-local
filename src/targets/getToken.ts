@@ -1,3 +1,5 @@
+import ms from "ms";
+
 import {
   InvalidParameterError,
   NotAuthorizedError,
@@ -85,9 +87,13 @@ async function getWithClientCredentials(
   if (!tokens) {
     throw new NotAuthorizedError();
   }
-
+  const expiresIn = `${userPoolClient.AccessTokenValidity ?? 24}${
+    userPoolClient.TokenValidityUnits?.AccessToken ?? "hours"
+  }`;
   return {
     access_token: tokens.AccessToken,
+    expires_in: ms(expiresIn) / 1000,
+    token_type: "Bearer",
   };
 }
 
