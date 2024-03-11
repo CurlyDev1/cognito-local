@@ -24,11 +24,17 @@ async function getWithRefreshToken(
   params: GetTokenRequest
 ) {
   const clientId = params.get("client_id");
-  const userPool = await services.cognito.getUserPoolForClientId(ctx, clientId);
-  const userPoolClient = await services.cognito.getAppClient(ctx, clientId);
+  const userPool = await services.cognito.getUserPoolForClientId(
+    ctx,
+    clientId as string
+  );
+  const userPoolClient = await services.cognito.getAppClient(
+    ctx,
+    clientId as string
+  );
   const user = await userPool.getUserByRefreshToken(
     ctx,
-    params.get("refresh_token")
+    params.get("refresh_token") as string
   );
   if (!user || !userPoolClient) {
     throw new NotAuthorizedError();
@@ -58,7 +64,10 @@ async function getWithClientCredentials(
 ) {
   const clientId = params.get("client_id");
   const clientSecret = params.get("client_secret");
-  const userPoolClient = await services.cognito.getAppClient(ctx, clientId);
+  const userPoolClient = await services.cognito.getAppClient(
+    ctx,
+    clientId as string
+  );
   if (!userPoolClient) {
     throw new NotAuthorizedError();
   }

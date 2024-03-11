@@ -82,7 +82,7 @@ const adminUserPasswordAuthFlow = async (
     "Authentication"
   );
 
-  await userPool.storeRefreshToken(ctx, tokens.RefreshToken, user);
+  await userPool.storeRefreshToken(ctx, tokens.RefreshToken as string, user);
 
   return {
     ChallengeName: undefined,
